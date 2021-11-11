@@ -1,4 +1,3 @@
-<script>
 // when the DOM is ready
 $(document).ready(function() {
 
@@ -245,14 +244,3 @@ $(document).ready(function() {
     }
   });
 });
-</script>
-
-<!-- FOXYCART -->
-<script data-cfasync="false" src="https://cdn.foxycart.com/fencecart/loader.js" async defer></script>
-<!-- /FOXYCART -->
-
-<script>
-    $(document).ready(function() {
-    	$('input[name="quantity"]').val("1").attr("min", "1");
-    });
-</script>
