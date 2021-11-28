@@ -114,6 +114,7 @@ $(document).ready(function() {
       jQuery('#foxy-runLength').val(`Run Length is ${feetInput.val()} feet, ${inchInput.val()} inches.`)
       console.log('read bitch ',jQuery("#foxy-kitPrice").val())
       console.log(jQuery('#foxy-posts').val())
+      console.log('testing')
 
     };
     
