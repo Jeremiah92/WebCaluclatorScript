@@ -95,12 +95,16 @@ $(document).ready(function() {
       
       //const kitPrice = jQuery('#All-Variants .Variant')
       var colorSearch = RegExp('[^- ]+[\s\S]$')
-      jQuery('#All-Variants .Variant').each(function(){
+      jQuery('#All-Variants .variant').each(function(){
       		let boardName = $(this).find("board" + " - " + boardColor).text()
           let boardPrice = $(this).find(".variant-price").text()
           
           let postName = $(this).find("post" + " - " + postColor).text()
           let postPrice = $(this).find(".variant-price").text()
+          console.log('board name ',boardName);
+          console.log('board price ',boardPrice);
+          console.log('post name ',postName);
+          console.log('post price ',postPrice);
           
           if(boardColor == colorSearch.test(boardName)){
           	jQuery("#foxy-kitPrice").val(boardPrice * bperpanel * numpanels)
@@ -108,6 +112,8 @@ $(document).ready(function() {
       })
       jQuery('#foxy-kitName').val(kitNameOutput)
       jQuery('#foxy-runLength').val(`Run Length is ${feetInput.val()} feet, ${inchInput.val()} inches.`)
+      console.log('read bitch ',jQuery("#foxy-kitPrice").val())
+      console.log(jQuery('#foxy-posts').val())
 
     };
     
