@@ -10,7 +10,7 @@ $(document).ready(function() {
   	//let feet = feetInput.val();
     //let inches = inchInput.val();
     //messages.text(`Run Length is ${feet} feet, ${inches} inches.`);
-    
+
     //const ss = SpreadsheetApp.getActive();
     //const calculatorSheet = ss.getSheetByName('PART CALCULATOR');
 
@@ -24,7 +24,7 @@ $(document).ready(function() {
     var boardTotal;
     //var messages = 'none';
     var previousGap;
-    
+
     main();
 
     function main(){
@@ -61,7 +61,7 @@ $(document).ready(function() {
       //clears previous data and posts results
       //calculatorSheet.getRange('H3:H10').clearContent()
       //calculatorSheet.getRange('H3:H10').setValues(finalSettings)
-      
+
       const pstSpacing = jQuery('#Post-Spacing');
       const numposts = jQuery('#Number-Of-Posts');
       const numboards = jQuery('#Number-Of-Boards')
@@ -72,12 +72,14 @@ $(document).ready(function() {
       //put the below items in input settings
       const kitNameInput = jQuery('#Run-Name-Input').val();
       const postColor = jQuery('#Frame-Color').val();
-      const boardColor = jQuery('#Board-Color').val();
-      
+      var boardColor = jQuery('#Board-Color').val();
+
+      console.log(jQuery('#Board-Color'))
+
       const kitNameOutput = jQuery('#Run-Name');
       const postOutput = jQuery('#Part-Post');
       const boardOutput = jQuery('#Part-Board');
-      
+
       kitNameOutput.text(`${kitNameInput}`)
       messages.text(`Run Length is ${feetInput.val()} feet, ${inchInput.val()} inches.`);
       pstSpacing.text(`${pSpacing}`);
@@ -90,36 +92,51 @@ $(document).ready(function() {
       postOutput.text(`4X4 Post - ${postColor}:`);
       boardOutput.text(`Standard Board - ${boardColor}:`);
       console.log("number of posts ", postTotal)
-      
+
       //html embed for foxycart
-      
+
       //const kitPrice = jQuery('#All-Variants .Variant')
-      var colorSearch = RegExp('[^- ]+[\s\S]$')
+      let allItems = []
+
+      var colorSearch = RegExp(/[^- ]+[\s\S]$/)
       jQuery('#All-Variants .variant').each(function(){
-      		let boardName = $(this).find("board" + " - " + boardColor).text()
-          let boardPrice = $(this).find(".variant-price").text()
-          
-          let postName = $(this).find("post" + " - " + postColor).text()
-          let postPrice = $(this).find(".variant-price").text()
-          console.log('board name ',boardName);
-          console.log('board price ',boardPrice);
-          console.log('post name ',postName);
-          console.log('post price ',postPrice);
-          
-          if(boardColor == colorSearch.test(boardName)){
-          	jQuery("#foxy-kitPrice").val(boardPrice * bperpanel * numpanels)
-          }
+        console.log($(".variant-name"))
+        console.log($(".variant-price"))
+        let itemarr = []
+    		itemarr.push($(this).find(".variant-name").text())
+        itemarr.push(Number($(this).find(".variant-price").text()))
+
+        console.log(itemarr)
+        allItems.push(itemarr)
+
       })
-      jQuery('#foxy-kitName').val(kitNameOutput)
+      console.log(allItems)
+      allItems.map(function(row){
+        console.log('board color is',boardColor)
+        console.log('regex',colorSearch.exec(row[0]))
+        console.log('search returned ',colorSearch.exec(row[0])[0] == boardColor)
+        if(boardColor == colorSearch.exec(row[0])[0]){
+          console.log('row 0',row[0])
+          console.log('row 1', row[1] + 9)
+          console.log('board per panel and num panels respectively',$(bperpanel).text(),$(numpanels).html())
+          jQuery("#foxy-kitPrice").val(row[1] * $(bperpanel).text() * $(numpanels).text())
+          console.log('math', row[1] * bperpanel * numpanels)
+          console.log('kitprice',$('#foxy-kitPrice').val())
+          console.log('true!!')
+        }
+      })
+
+      jQuery('#foxy-kitName').val($(kitNameOutput).text())
       jQuery('#foxy-runLength').val(`Run Length is ${feetInput.val()} feet, ${inchInput.val()} inches.`)
-      console.log('read bitch ',jQuery("#foxy-kitPrice").val())
       console.log(jQuery('#foxy-posts').val())
-      console.log('testing')
+      jQuery('#All-Variants .variant').each(function(){
+        console.log('data ',jQuery('#All-Variants .variant .variant-name').text())
+      });
 
     };
-    
+
     function inputData() {
-      
+
       const sysTypeField = jQuery(`#System-Type-Selection`);
       const desiredGAP = jQuery(`#Desired-Gap`);
 
@@ -153,7 +170,7 @@ $(document).ready(function() {
       // runs a function that determines all panel options based on user input
       let panOptions = panelOptionBuild(settings,boardWidth,postWidth);
 
-      //NOTE TO SELF. Number.isFinite is used to determine if a cell or property is empty. Works better that null, undefined or anything else
+      //NOTE TO SELF. Number.isFinite is used to determine if a cell or property is empty. Works better than null, undefined or anything else
       console.log('desired ', Number.isFinite(settings.gap.desired))
 
       //determines what the target gap should be
